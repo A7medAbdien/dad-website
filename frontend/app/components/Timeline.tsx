@@ -6,6 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import BasicAppearance from "@/app/animation/BasicAppearance";
 import Image from "@/app/components/Image";
 import { urlForImage } from "@/sanity/lib/utils";
+import { createDataAttribute } from 'next-sanity';
 import type { AboutMeQueryResult } from "@/sanity.types";
 
 type ITimeline = AboutMeQueryResult & {
@@ -19,6 +20,8 @@ interface TimelineEntry {
 }
 
 export const Timeline: React.FC<ITimeline> = ({
+    _id,
+    _type,
     timeline,
     heading,
     description,
@@ -49,11 +52,25 @@ export const Timeline: React.FC<ITimeline> = ({
             title: item.title || `Timeline Item ${index + 1}`,
             content: (
                 <>
-                    <p className="text-neutral-800  text-lg md:text-xl font-normal mb-8">
+                    <p
+                        className="text-neutral-800  text-lg md:text-xl font-normal mb-8"
+                        data-sanity={item._key ? createDataAttribute({
+                            id: _id || 'about-me',
+                            type: _type || 'AboutMe',
+                            path: `timeline[_key=="${item._key}"].description`,
+                        }).toString() : undefined}
+                    >
                         {item.description || ''}
                     </p>
                     {item.images && item.images.length > 0 && (
-                        <BasicAppearance className="grid grid-cols-2 gap-4">
+                        <BasicAppearance
+                            className="grid grid-cols-2 gap-4"
+                            data-sanity={item._key ? createDataAttribute({
+                                id: _id || 'about-me',
+                                type: _type || 'AboutMe',
+                                path: `timeline[_key=="${item._key}"].images`,
+                            }).toString() : undefined}
+                        >
                             {item.images.map((image, imageIndex) => (
                                 <Image
                                     key={imageIndex + index}
@@ -92,19 +109,48 @@ export const Timeline: React.FC<ITimeline> = ({
     return (
         <div className="w-full md:px-10" ref={containerRef}>
             <div className="max-w-7xl mx-auto pt-16 pb-10 px-4 md:px-8 lg:px-10">
-                <h1 className="text-5xl lg:text-7xl mb-4 font-bold max-w-4xl">
+                <h1
+                    className="text-5xl lg:text-7xl mb-4 font-bold max-w-4xl"
+                    data-sanity={createDataAttribute({
+                        id: _id || 'about-me',
+                        type: _type || 'AboutMe',
+                        path: 'heading',
+                    }).toString()}
+                >
                     {heading || 'About Me'}
                 </h1>
-                <p className="text-md lg:text-x max-w-sm">
+                <p
+                    className="text-md lg:text-x max-w-sm"
+                    data-sanity={createDataAttribute({
+                        id: _id || 'about-me',
+                        type: _type || 'AboutMe',
+                        path: 'description',
+                    }).toString()}
+                >
                     {description || 'No description available'}
                 </p>
             </div>
 
-            <div ref={ref} className="relative max-w-7xl mx-auto pb-20">
-                {data.map((item, index) => (
+            <div
+                ref={ref}
+                className="relative max-w-7xl mx-auto pb-20"
+                data-sanity={createDataAttribute({
+                    id: _id || 'about-me',
+                    type: _type || 'AboutMe',
+                    path: 'timeline',
+                }).toString()}
+            >
+                {data.map((item, index) => {
+                    const timelineItem = timeline?.[index];
+                    return (
                     <div
-                        key={index}
+                        key={timelineItem?._key || index}
                         className="flex justify-start pt-10 md:pt-40 md:gap-10"
+                        data-sanity={timelineItem?._key ? createDataAttribute({
+                            id: _id || 'about-me',
+                            type: _type || 'AboutMe',
+                            path: `timeline[_key=="${timelineItem._key}"]`,
+                        }).toString() : undefined}
                     >
                         {/* Dot */}
                         <div className="sticky flex flex-col md:flex-row z-40 items-center top-40 self-start max-w-xs lg:max-w-sm md:w-full">
@@ -123,6 +169,11 @@ export const Timeline: React.FC<ITimeline> = ({
                                     { "md:pl-20": lang == "en" },
                                     { "md:pr-20": lang == "ar" }
                                 )}
+                                data-sanity={timelineItem?._key ? createDataAttribute({
+                                    id: _id || 'about-me',
+                                    type: _type || 'AboutMe',
+                                    path: `timeline[_key=="${timelineItem._key}"].title`,
+                                }).toString() : undefined}
                             >
                                 {item.title}
                             </h3>
@@ -142,13 +193,19 @@ export const Timeline: React.FC<ITimeline> = ({
                                     { "text-left": lang == "en" },
                                     { "text-right": lang == "ar" }
                                 )}
+                                data-sanity={timelineItem?._key ? createDataAttribute({
+                                    id: _id || 'about-me',
+                                    type: _type || 'AboutMe',
+                                    path: `timeline[_key=="${timelineItem._key}"].title`,
+                                }).toString() : undefined}
                             >
                                 {item.title}
                             </h3>
                             {item.content}{" "}
                         </div>
                     </div>
-                ))}
+                    );
+                })}
                 <div
                     style={{
                         height: height + "px",

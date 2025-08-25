@@ -7,9 +7,10 @@ type Props = {
     children: React.ReactNode,
     delay?: number
     className?: string
+    'data-sanity'?: string
 }
 
-const BasicAppearance = ({ children, className, delay = 0 }: Props) => {
+const BasicAppearance = ({ children, className, delay = 0, 'data-sanity': dataSanity }: Props) => {
     return (
         <motion.div
             initial={{
@@ -24,6 +25,7 @@ const BasicAppearance = ({ children, className, delay = 0 }: Props) => {
                 delay
             }}
             className={className}
+            data-sanity={dataSanity}
         >
             {children}
         </motion.div>

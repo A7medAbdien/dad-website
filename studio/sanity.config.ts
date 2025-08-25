@@ -33,12 +33,16 @@ const homeLocation = {
 
 // resolveHref() is a convenience function that resolves the URL
 // path for different document types and used in the presentation tool.
-function resolveHref(documentType?: string, slug?: string): string | undefined {
+function resolveHref(documentType?: string, slug?: string, lang?: string): string | undefined {
+  const language = lang?.toLowerCase() || 'en'; // Default to English
+
   switch (documentType) {
     case 'post':
-      return slug ? `/posts/${slug}` : undefined
+      return slug ? `/${language}/posts/${slug}` : undefined
     case 'page':
-      return slug ? `/${slug}` : undefined
+      return slug ? `/${language}/${slug}` : undefined
+    case 'AboutMe':
+      return `/${language}/about`
     default:
       console.warn('Invalid document type:', documentType)
       return undefined
@@ -76,12 +80,12 @@ export default defineConfig({
             filter: `_type == "settings" && _id == "siteSettings"`,
           },
           {
-            route: '/:slug',
-            filter: `_type == "page" && slug.current == $slug || _id == $slug`,
+            route: '/:lang/about',
+            filter: `_type == "AboutMe" && lang == upper($lang)`,
           },
           {
-            route: '/posts/:slug',
-            filter: `_type == "post" && slug.current == $slug || _id == $slug`,
+            route: '/about',
+            filter: `_type == "AboutMe" && lang == "EN"`,
           },
         ]),
         // Locations Resolver API allows you to define where data is being used in your application. https://www.sanity.io/docs/presentation-resolver-api#8d8bca7bfcd7
@@ -113,8 +117,30 @@ export default defineConfig({
             resolve: (doc) => ({
               locations: [
                 {
-                  title: doc?.title || 'Untitled',
-                  href: resolveHref('post', doc?.slug)!,
+                  title: `${doc?.title || 'Untitled'} (EN)`,
+                  href: resolveHref('post', doc?.slug, 'en')!,
+                },
+                {
+                  title: `${doc?.title || 'Untitled'} (AR)`,
+                  href: resolveHref('post', doc?.slug, 'ar')!,
+                },
+                {
+                  title: 'Home',
+                  href: '/',
+                } satisfies DocumentLocation,
+              ].filter(Boolean) as DocumentLocation[],
+            }),
+          }),
+          AboutMe: defineLocations({
+            select: {
+              heading: 'heading',
+              lang: 'lang',
+            },
+            resolve: (doc) => ({
+              locations: [
+                {
+                  title: `About Me (${doc?.lang || 'EN'})`,
+                  href: resolveHref('AboutMe', undefined, doc?.lang)!,
                 },
                 {
                   title: 'Home',
