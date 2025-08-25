@@ -6,14 +6,14 @@ import { infoSection } from './objects/infoSection'
 import { settings } from './singletons/settings'
 import { link } from './objects/link'
 import { blockContent } from './objects/blockContent'
-import { layout } from './old/layout'
-import { intro } from './old/intro'
-import { tool } from './old/tool'
-import { caseStudy } from './old/caseStudy'
-import { blog } from './old/blog'
-import { faq } from './old/FAQ'
-import { contactUs } from './old/contactUs'
-import { AboutMe } from './old/aboutMr'
+import { layout } from './upcoming/layout'
+import { intro } from './upcoming/intro'
+import { tool } from './upcoming/tool'
+import { caseStudy } from './upcoming/caseStudy'
+import { blog } from './upcoming/blog'
+import { faq } from './upcoming/FAQ'
+import { contactUs } from './upcoming/contactUs'
+import { AboutMe } from './upcoming/aboutMr'
 
 // Export an array of all the schema types.  This is used in the Sanity Studio configuration. https://www.sanity.io/docs/schema-types
 
@@ -29,7 +29,7 @@ export const schemaTypes = [
   infoSection,
   callToAction,
   link,
-  // old
+  // upcoming
   layout,
   intro,
   tool,
