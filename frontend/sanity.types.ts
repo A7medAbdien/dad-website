@@ -13,6 +13,365 @@
  */
 
 // Source: schema.json
+export type AboutMe = {
+  _id: string
+  _type: 'AboutMe'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  lang: 'EN' | 'AR'
+  name: string
+  slug: Slug
+  heading: string
+  subheading?: string
+  description?: string
+  timeline?: Array<{
+    title?: string
+    description?: string
+    images?: Array<{
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      attribution?: string
+      _type: 'image'
+      _key: string
+    }>
+    _type: 'timeline'
+    _key: string
+  }>
+}
+
+export type Contact = {
+  _id: string
+  _type: 'contact'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  lang: 'EN' | 'AR'
+  title?: string
+  description?: string
+  location?: string
+}
+
+export type Faq = {
+  _id: string
+  _type: 'faq'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  lang: 'EN' | 'AR'
+  title?: string
+  description?: string
+  faqCards?: Array<{
+    question?: string
+    answer?: string
+    _type: 'faqCard'
+    _key: string
+  }>
+}
+
+export type Blog = {
+  _id: string
+  _type: 'blog'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  lang: 'EN' | 'AR'
+  title?: string
+  mutedText?: string
+  description?: string
+  blogCards?: Array<{
+    title?: string
+    category?: string
+    link?: string
+    img?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      attribution?: string
+      _type: 'image'
+    }
+    date?: string
+    content?: Array<{
+      title?: string
+      description?: string
+      isVideo?: boolean
+      media?: {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+        }
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        attribution?: string
+        _type: 'image'
+      }
+      video?: {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+        }
+        media?: unknown
+        _type: 'file'
+      }
+      _type: 'content'
+      _key: string
+    }>
+    _type: 'blogCard'
+    _key: string
+  }>
+}
+
+export type Case = {
+  _id: string
+  _type: 'case'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  lang: 'EN' | 'AR'
+  title?: string
+  mutedText?: string
+  description?: string
+  caseCards?: Array<{
+    title?: string
+    description?: string
+    button?: {
+      text?: string
+      link?: string
+    }
+    category?: string
+    img?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      attribution?: string
+      _type: 'image'
+    }
+    content?: Array<{
+      title?: string
+      description?: string
+      isVideo?: boolean
+      media?: {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+        }
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        attribution?: string
+        _type: 'image'
+      }
+      video?: {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+        }
+        media?: unknown
+        _type: 'file'
+      }
+      _type: 'content'
+      _key: string
+    }>
+    _type: 'caseCard'
+    _key: string
+  }>
+}
+
+export type Tool = {
+  _id: string
+  _type: 'tool'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  lang: 'EN' | 'AR'
+  title?: string
+  description?: string
+  button?: {
+    text?: string
+    link?: string
+  }
+  toolCards?: Array<{
+    title?: string
+    link?: string
+    img?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      attribution?: string
+      _type: 'image'
+    }
+    content?: Array<{
+      title?: string
+      description?: string
+      isVideo?: boolean
+      media?: {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+        }
+        media?: unknown
+        hotspot?: SanityImageHotspot
+        crop?: SanityImageCrop
+        attribution?: string
+        _type: 'image'
+      }
+      video?: {
+        asset?: {
+          _ref: string
+          _type: 'reference'
+          _weak?: boolean
+          [internalGroqTypeReferenceTo]?: 'sanity.fileAsset'
+        }
+        media?: unknown
+        _type: 'file'
+      }
+      _type: 'content'
+      _key: string
+    }>
+    _type: 'toolCard'
+    _key: string
+  }>
+}
+
+export type Intro = {
+  _id: string
+  _type: 'intro'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  lang: 'EN' | 'AR'
+  title?: string
+  mutedText?: string
+  description?: string
+  primaryButton?: {
+    text?: string
+    link?: string
+  }
+  secondaryButton?: {
+    text?: string
+    link?: string
+  }
+  introImage?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    attribution?: string
+    _type: 'image'
+  }
+  introCards?: Array<{
+    title?: string
+    description?: string
+    img?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      attribution?: string
+      _type: 'image'
+    }
+    _type: 'introCard'
+    _key: string
+  }>
+  numbers?: Array<{
+    title?: string
+    number?: number
+    numberUnit?: string
+    _type: 'numberCard'
+    _key: string
+  }>
+}
+
+export type Layout = {
+  _id: string
+  _type: 'layout'
+  _createdAt: string
+  _updatedAt: string
+  _rev: string
+  lang: 'EN' | 'AR'
+  logo?: {
+    asset?: {
+      _ref: string
+      _type: 'reference'
+      _weak?: boolean
+      [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+    }
+    media?: unknown
+    hotspot?: SanityImageHotspot
+    crop?: SanityImageCrop
+    attribution?: string
+    _type: 'image'
+  }
+  phone?: string
+  address?: string
+  email?: string
+  socialMedia?: Array<{
+    platform?: string
+    link?: string
+    media?: {
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      attribution?: string
+      _type: 'image'
+    }
+    _type: 'socialMediaLink'
+    _key: string
+  }>
+}
+
 export type CallToAction = {
   _type: 'callToAction'
   heading: string
@@ -397,25 +756,25 @@ export type SanityImagePalette = {
 
 export type SanityImageDimensions = {
   _type: 'sanity.imageDimensions'
-  height?: number
-  width?: number
-  aspectRatio?: number
+  height: number
+  width: number
+  aspectRatio: number
 }
 
 export type SanityImageHotspot = {
   _type: 'sanity.imageHotspot'
-  x?: number
-  y?: number
-  height?: number
-  width?: number
+  x: number
+  y: number
+  height: number
+  width: number
 }
 
 export type SanityImageCrop = {
   _type: 'sanity.imageCrop'
-  top?: number
-  bottom?: number
-  left?: number
-  right?: number
+  top: number
+  bottom: number
+  left: number
+  right: number
 }
 
 export type SanityFileAsset = {
@@ -495,6 +854,14 @@ export type SanityAssetSourceData = {
 }
 
 export type AllSanitySchemaTypes =
+  | AboutMe
+  | Contact
+  | Faq
+  | Blog
+  | Case
+  | Tool
+  | Intro
+  | Layout
   | CallToAction
   | Link
   | InfoSection
@@ -805,6 +1172,36 @@ export type PostPagesSlugsResult = Array<{
 export type PagesSlugsResult = Array<{
   slug: string
 }>
+// Variable: aboutMeQuery
+// Query: *[lang == $lang && _type == "AboutMe"][0]{    _id,    _type,    name,    slug,    heading,    subheading,    description,    timeline[]{      _key,      title,      description,      images[],    }  }
+export type AboutMeQueryResult = {
+  _id: string
+  _type: 'AboutMe'
+  name: string
+  slug: Slug
+  heading: string
+  subheading: string | null
+  description: string | null
+  timeline: Array<{
+    _key: string
+    title: string | null
+    description: string | null
+    images: Array<{
+      asset?: {
+        _ref: string
+        _type: 'reference'
+        _weak?: boolean
+        [internalGroqTypeReferenceTo]?: 'sanity.imageAsset'
+      }
+      media?: unknown
+      hotspot?: SanityImageHotspot
+      crop?: SanityImageCrop
+      attribution?: string
+      _type: 'image'
+      _key: string
+    }> | null
+  }> | null
+} | null
 
 // Query TypeMap
 import '@sanity/client'
@@ -818,5 +1215,6 @@ declare module '@sanity/client' {
     '\n  *[_type == "post" && slug.current == $slug] [0] {\n    content[]{\n    ...,\n    markDefs[]{\n      ...,\n      \n  _type == "link" => {\n    "page": page->slug.current,\n    "post": post->slug.current\n  }\n\n    }\n  },\n    \n  _id,\n  "status": select(_originalId in path("drafts.**") => "draft", "published"),\n  "title": coalesce(title, "Untitled"),\n  "slug": slug.current,\n  excerpt,\n  coverImage,\n  "date": coalesce(date, _updatedAt),\n  "author": author->{firstName, lastName, picture},\n\n  }\n': PostQueryResult
     '\n  *[_type == "post" && defined(slug.current)]\n  {"slug": slug.current}\n': PostPagesSlugsResult
     '\n  *[_type == "page" && defined(slug.current)]\n  {"slug": slug.current}\n': PagesSlugsResult
+    '\n  *[lang == $lang && _type == "AboutMe"][0]{\n    _id,\n    _type,\n    name,\n    slug,\n    heading,\n    subheading,\n    description,\n    timeline[]{\n      _key,\n      title,\n      description,\n      images[],\n    }\n  }\n': AboutMeQueryResult
   }
 }

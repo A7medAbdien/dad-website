@@ -1,4 +1,4 @@
-import {defineQuery} from 'next-sanity'
+import { defineQuery } from 'next-sanity'
 
 export const settingsQuery = defineQuery(`*[_type == "settings"][0]`)
 
@@ -95,3 +95,21 @@ export const pagesSlugs = defineQuery(`
   *[_type == "page" && defined(slug.current)]
   {"slug": slug.current}
 `)
+
+export const aboutMeQuery = defineQuery(`
+  *[lang == $lang && _type == "AboutMe"][0]{
+    _id,
+    _type,
+    name,
+    slug,
+    heading,
+    subheading,
+    description,
+    timeline[]{
+      _key,
+      title,
+      description,
+      images[],
+    }
+  }
+`);

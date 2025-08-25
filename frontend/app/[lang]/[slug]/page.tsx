@@ -6,35 +6,68 @@ import {sanityFetch} from '@/sanity/lib/live'
 import {getPageQuery, pagesSlugs} from '@/sanity/lib/queries'
 import {GetPageQueryResult} from '@/sanity.types'
 import {PageOnboarding} from '@/app/components/Onboarding'
+import { notFound } from 'next/navigation'
 
 type Props = {
-  params: Promise<{slug: string}>
+  params: Promise<{lang: string, slug: string}>
+}
+
+// Helper function to convert frontend lang to backend lang
+function mapLanguage(lang: string): string {
+    switch (lang.toLowerCase()) {
+        case 'en':
+            return 'EN';
+        case 'ar':
+            return 'AR';
+        default:
+            return 'EN';
+    }
+}
+
+// Helper function to validate language
+function isValidLanguage(lang: string): boolean {
+    return ['en', 'ar'].includes(lang.toLowerCase());
 }
 
 /**
  * Generate the static params for the page.
- * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-static-params
  */
 export async function generateStaticParams() {
   const {data} = await sanityFetch({
     query: pagesSlugs,
-    // // Use the published perspective in generateStaticParams
     perspective: 'published',
     stega: false,
   })
-  return data
+
+  // Generate params for both languages
+  const params = [];
+  for (const page of data || []) {
+    params.push({ lang: 'en', slug: page.slug });
+    params.push({ lang: 'ar', slug: page.slug });
+  }
+
+  return params;
 }
 
 /**
  * Generate metadata for the page.
- * Learn more: https://nextjs.org/docs/app/api-reference/functions/generate-metadata#generatemetadata-function
  */
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params
+  const { lang, slug } = params;
+
+  if (!isValidLanguage(lang)) {
+    return {
+      title: 'Page Not Found',
+      description: 'The requested page could not be found'
+    };
+  }
+
+  const mappedLang = mapLanguage(lang);
+
   const {data: page} = await sanityFetch({
     query: getPageQuery,
-    params,
-    // Metadata should never contain stega
+    params: { slug },
     stega: false,
   })
 
@@ -46,7 +79,19 @@ export async function generateMetadata(props: Props): Promise<Metadata> {
 
 export default async function Page(props: Props) {
   const params = await props.params
-  const [{data: page}] = await Promise.all([sanityFetch({query: getPageQuery, params})])
+  const { lang, slug } = params;
+
+  // Validate language parameter
+  if (!isValidLanguage(lang)) {
+    notFound();
+  }
+
+  const mappedLang = mapLanguage(lang);
+
+  const [{data: page}] = await Promise.all([sanityFetch({
+    query: getPageQuery,
+    params: { slug }
+  })])
 
   if (!page?._id) {
     return (
