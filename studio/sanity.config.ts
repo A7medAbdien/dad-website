@@ -3,19 +3,20 @@
  * Learn more: https://www.sanity.io/docs/configuration
  */
 
-import {defineConfig} from 'sanity'
-import {structureTool} from 'sanity/structure'
-import {visionTool} from '@sanity/vision'
-import {schemaTypes} from './src/schemaTypes'
-import {structure} from './src/structure'
-import {unsplashImageAsset} from 'sanity-plugin-asset-source-unsplash'
+import { defineConfig } from 'sanity'
+import { structureTool } from 'sanity/structure'
+import { visionTool } from '@sanity/vision'
+import { schemaTypes } from './src/schemaTypes'
+import { structure } from './src/structure'
+import { unsplashImageAsset } from 'sanity-plugin-asset-source-unsplash'
 import {
   presentationTool,
   defineDocuments,
   defineLocations,
   type DocumentLocation,
 } from 'sanity/presentation'
-import {assist} from '@sanity/assist'
+import { assist } from '@sanity/assist'
+import { langField } from './src/utils/lang'
 
 // Environment variables for project configuration
 const projectId = process.env.SANITY_STUDIO_PROJECT_ID || 'your-projectID'
@@ -44,6 +45,12 @@ function resolveHref(documentType?: string, slug?: string): string | undefined {
   }
 }
 
+const noLangSchemasNames = [
+  'page',
+  'post',
+  'person',
+  'settings',
+]
 // Main Sanity configuration
 export default defineConfig({
   name: 'default',
@@ -130,6 +137,33 @@ export default defineConfig({
 
   // Schema configuration, imported from ./src/schemaTypes/index.ts
   schema: {
-    types: schemaTypes,
+    types: schemaTypes.map((schema) => {
+      // Only add language field to document types, not objects or other types
+      if (schema.type === 'document' && !noLangSchemasNames.includes(schema.name)) {
+        return {
+          ...schema,
+          fields: [langField, ...schema.fields],
+          preview: {
+            ...schema.preview,
+            select: {
+              ...schema.preview?.select,
+              lang: 'lang'
+            },
+            prepare: (selection: any) => {
+              const { lang, ...rest } = selection
+              const originalPrepare = schema.preview?.prepare
+              const basePreview = originalPrepare ? originalPrepare(selection) : { title: rest.title || rest.name || lang }
+
+              return {
+                title: lang || basePreview.title,
+                subtitle: lang ? `Language: ${lang}${(basePreview as any).subtitle ? ` • ${(basePreview as any).subtitle}` : ''}` : (basePreview as any).subtitle,
+                media: (basePreview as any).media
+              }
+            }
+          }
+        }
+      }
+      return schema
+    }),
   },
 })
